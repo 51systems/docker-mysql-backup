@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
+mkdir -p ~/.ssh/
+
 confd -onetime -backend env
 
 chmod +x /backup.sh
 chmod +x /upload.sh
+
+chmod 400 ~/.ssh/id_rsa
 
 touch /var/log/cron.log
 

@@ -12,4 +12,4 @@ SSH_PATH="{{getv "/upload/target"}}"
 
 echo "Uploading $1 to ${SSH_USER}@${SSH_HOST}:${SSH_PATH}"
 
-scp "$1" ${SSH_USER}@${SSH_HOST}:${SSH_PATH}
+scp -oStrictHostKeyChecking=no "$1" ${SSH_USER}@${SSH_HOST}:${SSH_PATH}

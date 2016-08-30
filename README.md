@@ -17,3 +17,15 @@ a mysql and uploads it using scp.
 | UPLOAD_USER        | SSH Username             |
 | UPLOAD_TARGET      | Path to upload the backup to |
 | UPLOAD_SSHKEY      | Private key to use when connecting to ssh |
+
+
+## Testing
+There is an included `docker-compose` file for testing. 
+It mounts the public key in `test/ssh/id_rsa.pub` to an
+imaginary backup server, and then attempts to backup the database
+every minute. 
+
+### Gotachas
+When the backup server runs, it will change the permission of
+`id_rsa.pub`. You must `chown` it back to your current user
+and group prior to calling `docker-compose` again.
