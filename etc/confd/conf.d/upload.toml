@@ -1,0 +1,6 @@
+[template]
+src = "upload.sh.tmpl"
+dest = "/upload.sh"
+keys = [
+    "/upload/",
+]

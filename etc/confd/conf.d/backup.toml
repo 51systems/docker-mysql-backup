@@ -1,0 +1,6 @@
+[template]
+src = "backup.sh.tmpl"
+dest = "/backup.sh"
+keys = [
+    "/mysql/",
+]

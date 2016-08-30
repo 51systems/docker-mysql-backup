@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  mysql-backup:
+    build: .
+    image: nexus.encrochat.ch:5000/mysql-backup:latest
+    depends_on:
+      - db
+      - backup-server
+    environment:
+      # The database parameters should match those below
+      MYSQL_HOST: "db"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "password"
+      MYSQL_DATABASE: "mqtt"
+
+      # Upload once a minute as an example
+      CRON_SCHEDULE: "* * * * *"
+      UPLOAD_HOST: backup-server
+      UPLOAD_USER: root
+      UPLOAD_TARGET: /root/
+      UPLOAD_SSHKEY: "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAIB1oGl5oLA+kJSuMxR0goH0mfJwYTL57N1WPqZs6jdIZm/onQ4R5j7A35HdTFwepY3ae2xc66QwqSE6EFMs25n5JQHPyrzmXLjbqO15YUFjKS1OEyKkSnKfI5IPzWeV60WfyRyWuz6uUEpR42H53ow1++heYs92RyW2/Wrva4Of3w== rsa-key-20160829"
+
+  db:
+    image: mariadb:10.1
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: "mqtt"
+      MYSQL_ROOT_PASSWORD: "password"
+
+  backup-server:
+    image: macropin/sshd
+
+    volumes:
+      - ./test/ssh:/root/.ssh

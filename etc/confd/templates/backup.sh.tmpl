@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -e
+
+[ -d /backup ] || mkdir /backup
+
+MYSQL_HOST="{{getv "/mysql/host"}}"
+MYSQL_PORT="{{getv "/mysql/port" "3306"}}"
+MYSQL_USER="{{getv "/mysql/user"}}"
+MYSQL_PASS="{{getv "/mysql/password"}}"
+MYSQL_DB="{{getv "/mysql/database" ""}}"
+
+BACKUP_NAME=$(date +\%Y.\%m.\%d.\%H\%M\%S)-${MYSQL_DB}.sql
+
+mysqldump -h"${MYSQL_HOST}" -P${MYSQL_PORT} -u"${MYSQL_USER} -p"${MYSQL_PASS}" ${MYSQL_DB} > /backup/${BACKUP_NAME}
+
+echo "Created backup ${BACKUP_NAME}"
+
+exec upload.sh /backup/BACKUP_NAME
