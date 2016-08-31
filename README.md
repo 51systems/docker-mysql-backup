@@ -1,7 +1,7 @@
 # Mysql Backup
 
 Docker mysql backup image that periodically backs up 
-a mysql and uploads it using scp.
+a mysql database, compresses it, and uploads it using scp.
  
  
 ## Environment variables
@@ -29,3 +29,8 @@ every minute.
 When the backup server runs, it will change the permission of
 `id_rsa.pub`. You must `chown` it back to your current user
 and group prior to calling `docker-compose` again.
+
+Because of this, I recommend using the following command to run the docker-compose file
+`sudo chown <user>:<group> test/ssh/id_rsa.pub && docker-compose up --build`
+
+Replacing `user` and `group` with your username and linux group, respectively.

@@ -10,10 +10,13 @@ MYSQL_USER="{{getv "/mysql/user"}}"
 MYSQL_PASS="{{getv "/mysql/password"}}"
 MYSQL_DB="{{getv "/mysql/database" ""}}"
 
-BACKUP_NAME=$(date +\%Y.\%m.\%d.\%H\%M\%S)-${MYSQL_DB}.sql
+BACKUP_NAME=$(date +\%Y.\%m.\%d.\%H\%M\%S)-${MYSQL_DB}.sql.gz
 
-mysqldump -h"${MYSQL_HOST}" -P${MYSQL_PORT} -u"${MYSQL_USER}" -p"${MYSQL_PASS}" ${MYSQL_DB} > /backup/${BACKUP_NAME}
+mysqldump -h"${MYSQL_HOST}" -P${MYSQL_PORT} -u"${MYSQL_USER}" -p"${MYSQL_PASS}" ${MYSQL_DB} | gzip > /backup/${BACKUP_NAME}
 
 echo "Created backup ${BACKUP_NAME}"
 
-exec /upload.sh /backup/${BACKUP_NAME}
+/upload.sh /backup/${BACKUP_NAME}
+
+echo "Removing backup file"
+rm /backup/${BACKUP_NAME}
